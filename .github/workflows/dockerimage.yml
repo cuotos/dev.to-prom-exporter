@@ -3,7 +3,7 @@ name: build image to dockerhub
 on:
   push:
     branches:
-      - pipeline
+      - '*'
     tags:
       - 'v*'
 
@@ -23,14 +23,3 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: cuotos/devto-exporter
           tag_with_ref: true
-
-#      - name: login to dockerhub
-#        if: success()
-#        uses: actions-hub/docker/login@master
-#        env:
-#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-#
-#      - name: build image
-#        if: success()
-#        run: docker build -t cuotos/devto-exporter:${IMAGE_TAG} .
