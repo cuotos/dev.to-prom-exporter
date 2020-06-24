@@ -17,13 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: login to dockerhub
-        if: success()
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: cuotos/devto-exporter
+          tag_with_ref: true
 
-      - name: build image
-        if: success()
-        run: docker build -t cuotos/devto-exporter:${IMAGE_TAG} .
+#      - name: login to dockerhub
+#        if: success()
+#        uses: actions-hub/docker/login@master
+#        env:
+#          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: build image
+#        if: success()
+#        run: docker build -t cuotos/devto-exporter:${IMAGE_TAG} .
