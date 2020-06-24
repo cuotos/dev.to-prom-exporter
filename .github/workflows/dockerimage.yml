@@ -1,0 +1,29 @@
+name: build image to dockerhub
+
+on:
+  push:
+    branches:
+      - pipeline
+    tags:
+      - 'v*'
+
+env:
+  IMAGE_TAG: devto-exporter
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: login to dockerhub
+        if: sucess()
+        uses: actions-hub/docker/login@masater
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: build image
+        if: success()
+        run: docker build -t cuotos/devto-exporter:${IMAGE_TAG} .
