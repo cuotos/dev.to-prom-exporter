@@ -7,9 +7,6 @@ on:
     tags:
       - 'v*'
 
-env:
-  IMAGE_TAG: devto-exporter
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,3 +20,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: cuotos/devto-exporter
           tag_with_ref: true
+          build_args: version=${GITHUB_REF##*/}
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERHUB_REPOSITORY: cuotos/devto-exporter

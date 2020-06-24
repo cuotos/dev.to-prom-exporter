@@ -16,6 +16,10 @@ type App struct {
 	DevtoApiKey string `required:"true" split_words:"true"`
 }
 
+func init() {
+	prometheus.MustRegister(NewCollector("devto_exporter"))
+}
+
 func main() {
 
 	var a App
@@ -36,15 +40,15 @@ func main() {
 
 func probeHandler(w http.ResponseWriter, r *http.Request, client *client.DevtoClient) {
 
-	ctx, cancel := context.WithTimeout(r.Context(), time.Second * 60)
+	ctx, cancel := context.WithTimeout(r.Context(), time.Second*60)
 	defer cancel()
 
 	r.WithContext(ctx)
 
 	probeSuccessGauge := prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: "devto",
-		Name: "probe_success",
-		Help: "Displays whether or not the probe was a success",
+		Name:      "probe_success",
+		Help:      "Displays whether or not the probe was a success",
 	})
 
 	registry := prometheus.NewRegistry()
@@ -66,32 +70,32 @@ func Probe(registry *prometheus.Registry, client *client.DevtoClient) (success b
 	var (
 		totalArticlesGauge = prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: "devto",
-			Name: "published_articles_total",
-			Help: "Displays the total number of users published articles",
+			Name:      "published_articles_total",
+			Help:      "Displays the total number of users published articles",
 		})
 
 		totalViewsGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: "devto",
-			Name: "article_views_total",
-			Help: "Displays total number of views of users articles",
+			Name:      "article_views_total",
+			Help:      "Displays total number of views of users articles",
 		}, []string{"article_id"})
 
 		totalReactionGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: "devto",
-			Name: "article_reactions_total",
-			Help: "Displays total number of reactions to users articles",
+			Name:      "article_reactions_total",
+			Help:      "Displays total number of reactions to users articles",
 		}, []string{"article_id"})
 
 		totalCommentsGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: "devto",
-			Name: "article_comments_total",
-			Help: "Displays total number of comments to users articles",
+			Name:      "article_comments_total",
+			Help:      "Displays total number of comments to users articles",
 		}, []string{"article_id"})
 
 		probeDuration = prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: "devto",
-			Name: "probe_duration_seconds",
-			Help: "Displays how long the probe took in seconds",
+			Name:      "probe_duration_seconds",
+			Help:      "Displays how long the probe took in seconds",
 		})
 	)
 
@@ -109,7 +113,6 @@ func Probe(registry *prometheus.Registry, client *client.DevtoClient) (success b
 	}
 	duration := time.Since(start).Seconds()
 	probeDuration.Set(duration)
-
 
 	var totalPublishedArticles int
 
