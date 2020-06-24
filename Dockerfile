@@ -4,7 +4,13 @@ COPY . /app
 
 WORKDIR /app
 
-RUN go build -o /devto-exporter
+COPY go.mod .
+
+RUN go mod download
+
+ARG version
+
+RUN go build -ldflags "-X main.Version=${version}" -o /devto-exporter
 
 FROM alpine
 

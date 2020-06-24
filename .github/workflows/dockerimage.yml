@@ -20,6 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: cuotos/devto-exporter
           tag_with_ref: true
+          build_args: version=${GITHUB_REF##*/}
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
