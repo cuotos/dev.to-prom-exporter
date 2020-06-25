@@ -24,4 +24,3 @@ jobs:
           repository: cuotos/devto-exporter
           tag_with_sha: true
           build_args: version=${{ env.BRANCH_NAME }}
-          push: false
