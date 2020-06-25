@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: extract branch name
-        run: echo "::set-env name=BRANCH_NAME::hello-branch"
+        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##/*})"
 
       - name: debug
         run: echo "::debug::debug message"
