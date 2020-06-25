@@ -1,15 +1,15 @@
 FROM golang:1.14-alpine as builder
 
-COPY . /app
-
 WORKDIR /app
 
 COPY go.mod .
-
 RUN go mod download
 
-ARG version
+COPY . .
 
+ARG version=unset
+
+RUN echo "VERSION ######### ${version} ############ "
 RUN go build -ldflags "-X main.Version=${version}" -o /devto-exporter
 
 FROM alpine
