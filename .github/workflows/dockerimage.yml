@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@master
 
       - name: extract branch name
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##/*})"
+        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF##*/})"
 
       - name: debug
-        run: echo "::debug::debug message"
+        run: echo "::debug::$(echo ${GITHUB_REF##/*})"
 
       - uses: docker/build-push-action@v1
         with:
