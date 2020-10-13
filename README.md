@@ -4,6 +4,8 @@ Export basic stats about all articles written by the owner of the api_key provid
 
 Requires `DEVTO_API_KEY` env var.
 
+Currently only uses the "/users/me" endpoint, if you had multiple users you'd need an exporter for each.
+
 Returns 
 
 ```
