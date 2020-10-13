@@ -9,6 +9,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
         env:
