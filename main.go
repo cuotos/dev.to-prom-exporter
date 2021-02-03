@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"dev.to-prom-exporter/client"
-	"github.com/kelseyhightower/envconfig"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"dev.to-prom-exporter/client"
+	"github.com/kelseyhightower/envconfig"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type App struct {
@@ -105,7 +106,8 @@ func Probe(registry *prometheus.Registry, client *client.DevtoClient) (success b
 	registry.MustRegister(totalCommentsGauge)
 	registry.MustRegister(probeDuration)
 
-	start := time.Now()
+	probeDurationTimer := prometheus.NewTimer(prometheus.ObserverFunc(probeDuration.Set))
+
 	articles, err := client.GetUserArticleData()
 	if err != nil {
 		log.Println("unable to get data:", err.Error())
@@ -118,16 +120,15 @@ func Probe(registry *prometheus.Registry, client *client.DevtoClient) (success b
 	}
 	username := user.Username
 
-	duration := time.Since(start).Seconds()
-	probeDuration.Set(duration)
+	probeDurationTimer.ObserveDuration()
 
 	var totalPublishedArticles int
 
 	for _, a := range articles {
 		id := strconv.Itoa(a.ID)
 
-		totalViewsGauge.WithLabelValues(id,username).Set(float64(a.PageViewsCount))
-		totalReactionGauge.WithLabelValues(id,username).Set(float64(a.PublicReactionsCount))
+		totalViewsGauge.WithLabelValues(id, username).Set(float64(a.PageViewsCount))
+		totalReactionGauge.WithLabelValues(id, username).Set(float64(a.PublicReactionsCount))
 		totalCommentsGauge.WithLabelValues(id, username).Set(float64(a.CommentsCount))
 
 		if a.Published {
