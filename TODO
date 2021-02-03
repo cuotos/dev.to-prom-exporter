@@ -1,2 +1,3 @@
 - dont get totals, get the total per article, add the label and the user can sum in prometheus
 - refactor the shite getTotalViewsAndReactions wank
+- use goreleaser
