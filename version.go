@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
 	"runtime"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 var (
-	Version   string
+	Version   = "unset"
 	GoVersion = runtime.Version()
 )
 
