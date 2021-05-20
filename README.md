@@ -28,3 +28,13 @@ devto_probe_success < 1|0 >
 # TYPE devto_published_articles_total gauge
 devto_published_articles_total <int>
 ```
+
+## Building
+this should do it.
+```bash
+git tag "$(svu next)"
+git push --tags
+goreleaser --rm-dist
+```
+
+svu - https://github.com/caarlos0/svu
